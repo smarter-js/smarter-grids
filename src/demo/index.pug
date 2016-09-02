@@ -1,0 +1,63 @@
+extends _template.pug
+
+block title
+	| Smarter Responsive Grids Demo
+
+block vars
+	- var bodyClass = ''
+	- var description = ''
+
+block content
+
+
+
+	h2 Standard row & column:
+	.row
+		span .row
+		.col
+			span .col
+
+
+
+
+	h2 Responsive row & columns:
+	.row
+		span .row
+		.col.m-6.l-3
+			span .col .m-6 .l-3
+		.col.m-6.l-3
+			span .col .m-6 .l-3
+		.col.m-6.l-3
+			span .col .m-6 .l-3
+		.col.m-6.l-3
+			span .col .m-6 .l-3
+
+
+							
+	h2 Table grid:
+	.table.s-1.m-2.l-4
+		span .table .s-1 .m-2 .l-4
+		.cell
+			span .cell
+		.cell
+			span .cell
+		.cell
+			span .cell
+		.cell
+			span .cell
+		.cell
+			span .cell
+		.cell
+			span .cell
+		.cell
+			span .cell
+		.cell
+			span .cell
+
+	h2 Push & Pull:
+	.row
+		span .row
+		.col.s-6.l-push-6
+			span .col .s-6 .s-l-push-6
+		.col.s-6.l-pull-6
+			span .col .s-6 .s-l-pull-6

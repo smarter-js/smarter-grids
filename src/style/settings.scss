@@ -1,0 +1,37 @@
+// RESPONSIVE SETTINGS
+$medium-breakpoint: 640px !default;
+$large-breakpoint: 1280px !default;
+$small: 's' !default;
+$medium: 'm' !default;
+$large: 'l' !default;
+$divider: '-' !default;
+$up: 'u' !default;
+$down: 'd' !default;
+
+// GRID SETTINGS
+$cols: 12 !default;
+$gutter-size: 0 10px !default;
+$container-width: $large-breakpoint !default;
+$row: 'row' !default;
+$column: 'col' !default;
+$collapse: 'collapse' !default;
+
+// TABLE GRID
+$table-cell-gutter: 0 10px 20px 10px !default;
+$table: 'table' !default;
+$table-cell: 'cell' !default;
+$table-collapse: 'collapse' !default;
+
+// PUSH/PULL CLASSES
+$push: 'push' !default;
+$pull: 'pull' !default;
+
+// MEDIA QUERY VARIABLES
+$small-only: unquote('screen and (max-width: #{$medium-breakpoint})') !default;
+$small-up: screen !default;
+$medium-only: unquote('screen and (min-width: #{$medium-breakpoint}) and (max-width: #{$large-breakpoint})') !default;
+$medium-up: unquote('screen and (min-width: #{$medium-breakpoint})') !default;
+$medium-down: unquote('screen and (max-width: #{$large-breakpoint})') !default;
+$large-only: unquote('screen and (min-width: #{$large-breakpoint})') !default;
+$large-up: $large-only !default;
+$large-down: screen !default;

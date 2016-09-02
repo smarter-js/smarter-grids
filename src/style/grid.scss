@@ -1,0 +1,65 @@
+// GRID SYSTEM
+html{
+	box-sizing: border-box;
+}
+*, *:before, *:after{
+	box-sizing: inherit;
+}
+
+.#{$row}{
+	max-width: $container-width;
+	margin-left: auto;
+	margin-right: auto;
+	width: 100%;
+	img{
+		max-width: 100%;
+	}
+	&:after{
+		content: " ";
+		display: block;
+		clear: both;
+	}
+	&.#{$collapse}{
+		> .#{$column}{
+			padding-left: 0;
+			padding-right: 0;
+		}
+	}
+}
+.#{$column}{
+	padding: $gutter-size;
+	box-sizing: border-box;
+	width: 100%;
+	float: left;
+	position: relative;
+	&:last-child:not(:first-child){
+		float: right;
+	}
+}
+@for $i from 1 through $cols{
+	.#{$small}#{$divider}#{$i}{
+		width: 100% * ($i / $cols);
+	}
+}
+
+
+@media #{$medium-up}{
+	.#{$medium}{
+		width: 100%;
+	}
+	@for $i from 1 through $cols{
+		.#{$medium}#{$divider}#{$i}{
+			width: 100% * ($i / $cols);
+		}
+	}
+}
+@media #{$large-up}{
+	.#{$large}{
+		width: 100%;
+	}
+	@for $i from 1 through $cols{
+		.#{$large}#{$divider}#{$i}{
+			width: 100% * ($i / $cols);
+		}
+	}
+}
