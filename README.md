@@ -2,6 +2,8 @@
 
 A Sass/CSS responsive grid framework with no JavaScript or dependencies.
 
+[View demo](https://smarter-js.github.io/smarter-grids/demo/)
+
 ## Simple Responsive Grids
 
 
