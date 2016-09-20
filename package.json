@@ -1,7 +1,7 @@
 {
   "name": "smarter-grids",
   "title": "Smarter Grids",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "A slim, modern responsive framework",
   "main": "dist/smarterMenuBar.js",
   "scripts": {

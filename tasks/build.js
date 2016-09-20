@@ -15,7 +15,7 @@ module.exports = function(gulp, config, plugins){
 
 	// Clears, then builds dist and demo folder
 	gulp.task('build', function(cb){
-		runSequence('dist', ['demo'])
+		runSequence('dist', ['demo'], cb)
 	})
 
 
