@@ -2,18 +2,6 @@
 'use strict'
 module.exports = function(gulp, config, plugins){
 
-	// Error handling
-	let onError = {
-		errorHandler: function(err) {
-			util.log(util.colors.red(err))
-			this.emit('end')
-			notifier({
-				message: 'ERROR!!!',
-				onLast: true
-			})
-		}
-	}
-
 
 	// Clear demo folder
 	gulp.task('demo:clean', function(){
@@ -24,13 +12,24 @@ module.exports = function(gulp, config, plugins){
 	// Transpile Pug
 	gulp.task('demo:html', function(){
 
+		let sources = gulp.src([
+			'dist/**/*.{js,css}',
+			'!dist/**/*.min.{js,css}',
+			'demo/script.js',
+			'demo/style.css'
+		])
+
 		return gulp.src([
 				config.src + '/' + config.demo + '/**/*.pug',
 				'!' + config.src + '/' + config.demo + '/**/_*.pug',
 			])
-			.pipe(plumber(onError))
+			.pipe(plumber(config.onError))
 			.pipe(pug({
 				pretty: '\t'
+			}))
+			.pipe(inject(sources, {
+				addPrefix: '..',
+				addRootSlash: false
 			}))
 			.pipe(gulp.dest(config.demo))
 			.pipe(notify({
@@ -48,11 +47,13 @@ module.exports = function(gulp, config, plugins){
 	})
 
 	// Build complete demo folder
-	gulp.task('demo:build', ['demo:script', 'demo:style', 'demo:html', 'demo:bower'])
+	gulp.task('demo:build', function(cb){
+		runSequence(['demo:script', 'demo:style', 'demo:bower'], 'demo:html', cb)
+	})
 
 	// Clean, then build complete demo folder
-	gulp.task('demo', function(){
-		return runSequence('demo:clean', ['demo:build'])
+	gulp.task('demo', function(cb){
+		runSequence('demo:clean', ['demo:build'], cb)
 	})
 
 

@@ -2,22 +2,12 @@
 'use strict'
 module.exports = function(gulp, config, plugins){
 
-	let onError = {
-		errorHandler: function(err) {
-			util.log(util.colors.red(err))
-			this.emit('end')
-			gulp.src('')
-				.pipe(notify({message: 'ERROR!!!', onLast: true}))
-			
-		}
-	}
-
 
 	// Transpile demo JavaScript
 	gulp.task('demo:script', function(cb){
 
 		return gulp.src(config.src + '/' + config.demo + '/**/*.js')
-			.pipe(plumber(onError))
+			.pipe(plumber(config.onError))
 			.pipe(babel({
 				presets: ['es2015', 'react'],
 				sourceMaps: true,
@@ -34,15 +24,27 @@ module.exports = function(gulp, config, plugins){
 	})
 
 	// Transpile module JavaScript
+	let umdOptions = {
+		exports: umdName,
+		namespace: umdName
+	}
+	function umdName(file){
+		if(config.package.exportName){
+			return config.package.exportName
+		}
+		else{
+			return config.camelName
+		}
+	}
 	gulp.task('script', function(){
 
-		let full = gulp.src(config.src + '/' + config.script + '/' + config.fileName + '.js')
-			.pipe(plumber(onError))
+		let full = gulp.src(config.src + '/' + config.script + '/main.js')
+			.pipe(plumber(config.onError))
 			//.pipe(sourcemaps.init({loadMaps: true}))
 			.pipe(babel({
 				presets: ['es2015']
 			}))
-			.pipe(umd())
+			.pipe(umd(umdOptions))
 			.pipe(wrapJs(config.info + '\n;%= body %'))
 			.pipe(jsbeautifier({
 				indent_char: '\t',
@@ -51,11 +53,14 @@ module.exports = function(gulp, config, plugins){
 			.pipe(semi.remove({
 				leading: true
 			}))
+			.pipe(rename(function(path){
+				path.basename = config.package.name
+			}))
 			//.pipe(sourcemaps.write('./'))
 
-		let min = gulp.src(config.src + '/' + config.script + '/' + config.fileName + '.js')
-			.pipe(plumber(onError))
-			.pipe(umd())
+		let min = gulp.src(config.src + '/' + config.script + '/main.js')
+			.pipe(plumber(config.onError))
+			.pipe(umd(umdOptions))
 			.pipe(babel({
 				presets: ['es2015']
 			}))
@@ -65,7 +70,7 @@ module.exports = function(gulp, config, plugins){
 			}))
 			.pipe(stripDebug())
 			.pipe(rename(function(path){
-				path.basename += '.min'
+				path.basename = config.package.name + '.min'
 			}))
 
 

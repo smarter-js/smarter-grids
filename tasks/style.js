@@ -2,22 +2,12 @@
 'use strict'
 module.exports = function(gulp, config, plugins){
 
-	let onError = {
-		errorHandler: function(err) {
-			util.log(util.colors.red(err))
-			this.emit('end')
-			gulp.src('')
-				.pipe(notify({message: 'ERROR!!!', onLast: true}))
-			
-		}
-	}
-
 
 	// Transpile demo Sass
 	gulp.task('demo:style', function(){
 
 		return gulp.src(config.src + '/' + config.demo + '/**/*.{scss,css}')
-			.pipe(plumber(onError))
+			.pipe(plumber(config.onError))
 			.pipe(sourcemaps.init())
 			.pipe(sass({
 				indentType: 'tab',
@@ -40,8 +30,8 @@ module.exports = function(gulp, config, plugins){
 	// Transpile module Sass
 	gulp.task('style:build', function(){
 
-		let full = gulp.src(config.src + '/' + config.style + '/' + config.fileName + '.scss')
-			.pipe(plumber(onError))
+		let full = gulp.src(config.src + '/' + config.style + '/main.scss')
+			.pipe(plumber(config.onError))
 			.pipe(sourcemaps.init())
 			.pipe(sass({
 				indentType: 'tab',
@@ -52,10 +42,12 @@ module.exports = function(gulp, config, plugins){
 				browsers: config.browsers
 			}))
 			.pipe(sourcemaps.write('/'))
-			.pipe(gulp.dest(config.dist))
+			.pipe(rename(function(path){
+				path.basename = config.package.name
+			}))
 
-		let min = gulp.src(config.src + '/' + config.style + '/' + config.fileName + '.scss')
-			.pipe(plumber(onError))
+		let min = gulp.src(config.src + '/' + config.style + '/main.scss')
+			.pipe(plumber(config.onError))
 			.pipe(sass({
 				outputStyle: 'compressed'
 			}))
@@ -64,11 +56,11 @@ module.exports = function(gulp, config, plugins){
 			}))
 			.pipe(csso())
 			.pipe(rename(function(path){
-				path.basename += '.min'
+				path.basename = config.package.name + '.min'
 			}))
-			.pipe(gulp.dest(config.dist))
 
 		return merge(full, min)
+			.pipe(gulp.dest(config.dist))
 			.pipe(plugins.browserSync.stream())
 			.pipe(notify({
 				message: 'Library styles processed',

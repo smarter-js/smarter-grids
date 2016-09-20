@@ -34,7 +34,17 @@ for(i in plugins){
 }
 
 // Get camelcase version of name
-config.fileName = camelCase(config.package.name)
+config.camelName = camelCase(config.package.name)
+
+config.onError = {
+	errorHandler: function(err) {
+		util.log(util.colors.red(err))
+		this.emit('end')
+		gulp.src('')
+			.pipe(notify({message: 'ERROR!!!', onLast: true}))
+		
+	}
+}
 
 // Load tasks
 let files = glob.sync('./tasks/*.js')
@@ -46,8 +56,6 @@ for(i = 0; i < files.length; i++){
 gulp.task('test', function(cb){
 	cb()
 })
-
-
 
 
 
